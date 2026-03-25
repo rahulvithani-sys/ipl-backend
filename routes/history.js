@@ -15,11 +15,26 @@ router.get("/:user_id", async (req, res) => {
         m.winner,
         p.team_selected,
         p.is_default,
-        m.start_time
+        m.start_time,
+
+        ump.points,
+
+        CASE 
+          WHEN ump.points >= -10 THEN 'WIN'
+          ELSE 'LOSS'
+        END AS result,
+
+        (ump.points + 10) AS net_amount
+
        FROM picks p
        JOIN matches m ON p.match_id = m.id
+       JOIN user_match_points ump 
+         ON ump.match_id = m.id 
+         AND ump.user_id = p.user_id
+
        WHERE p.user_id = $1
        AND m.winner IS NOT NULL
+
        ORDER BY m.start_time DESC`,
       [user_id]
     );
