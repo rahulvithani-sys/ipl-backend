@@ -50,10 +50,22 @@ router.get("/upcoming", async (req, res) => {
   try {
 
     const result = await pool.query(
-      `SELECT *
-       FROM matches
-       WHERE start_time > NOW()
-       ORDER BY start_time
+      `SELECT 
+        m.*,
+
+        COUNT(CASE WHEN p.team_selected = m.team1 THEN 1 END) AS team1_count,
+        COUNT(CASE WHEN p.team_selected = m.team2 THEN 1 END) AS team2_count
+
+       FROM matches m
+
+       LEFT JOIN picks p ON p.match_id = m.id
+
+       WHERE m.start_time > NOW()
+
+       GROUP BY m.id
+
+       ORDER BY m.start_time ASC
+
        LIMIT 5`
     );
 
@@ -64,8 +76,6 @@ router.get("/upcoming", async (req, res) => {
     res.send("Error fetching matches");
   }
 });
-
-
 
 // ✅ GET NEXT MATCH (User dashboard)
 router.get("/next", async (req, res) => {
