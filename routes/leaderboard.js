@@ -46,7 +46,7 @@ router.get("/", async (req, res) => {
        LEFT JOIN user_match_points ump 
          ON u.id = ump.user_id
        GROUP BY u.id, u.name, u.balance
-       ORDER BY u.balance DESC`
+       ORDER BY total_points DESC`
     );
 
     res.json(result.rows);
