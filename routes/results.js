@@ -253,7 +253,7 @@ router.post("/process", async (req, res) => {
       let net = 0;
 
       if(!userPick){ 
-        net = 0;}
+        continue;}
 
       else if (userPick && userPick.team_selected === winner) {
         net = winAmount - 60;
