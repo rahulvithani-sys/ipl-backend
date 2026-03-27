@@ -22,7 +22,7 @@ router.post("/register", async (req, res) => {
 
     const result = await pool.query(
       `INSERT INTO users(mobile,name,password,balance)
-       VALUES($1,$2,$3,1000)
+       VALUES($1,$2,$3,1500)
        RETURNING *`,
       [mobile, name, password]
     );
