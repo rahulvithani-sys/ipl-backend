@@ -6,19 +6,24 @@ const assignDefaults = async (match_id) => {
 
     // 1️⃣ Get match teams
     const matchRes = await pool.query(
-      `SELECT team1, team2 FROM matches WHERE id=$1`,
+      `SELECT team1, team2, start_time FROM matches WHERE id=$1`,
       [match_id]
     );
 
-    const { team1, team2 } = matchRes.rows[0];
+    const { team1, team2, start_time } = matchRes.rows[0];
 
     // 2️⃣ Get all users
-    const usersRes = await pool.query(`SELECT id FROM users`);
+    const usersRes = await pool.query(`SELECT id, created_at FROM users`);
     const users = usersRes.rows;
 
     for (const user of users) {
 
       const userId = user.id;
+
+      // ✅ NEW CONDITION (IMPORTANT)
+if (new Date(user.created_at) > new Date(start_time)) {
+continue; // skip this user
+}
 
       // 3️⃣ Check if user already picked
       const existing = await pool.query(
