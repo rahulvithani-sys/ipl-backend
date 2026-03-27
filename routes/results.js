@@ -242,7 +242,7 @@ router.post("/process", async (req, res) => {
     const winAmount =
       winners.length > 0 ? matchPot / winners.length : 0;
 
-    const totalUsers = allUsers.length;
+    const totalUsers = picks.length;
 
     // 🔹 Process users
     for (const user of allUsers) {
@@ -250,11 +250,15 @@ router.post("/process", async (req, res) => {
       const userId = user.id;
       const userPick = pickMap[userId];
 
-      let net = -60;
+      let net = 0;
 
-      if (userPick && userPick.team_selected === winner) {
+      if(!userPick){ 
+        net = 0;}
+
+      else if (userPick && userPick.team_selected === winner) {
         net = winAmount - 60;
-      }
+      } 
+      else { net = -60; }
 
       const balanceRes = await pool.query(
         `UPDATE users
