@@ -67,7 +67,7 @@ router.post("/set", async (req, res) => {
 });
 
 // GET current defaults
-app.get("/defaults/:userId", async (req, res) => {
+app.get("/:userId", async (req, res) => {
 const { userId } = req.params;
 
 try {
