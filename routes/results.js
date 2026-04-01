@@ -31,6 +31,7 @@ router.post("/abandon", async (req, res) => {
     }
 
     // refund all users
+    /*
     const users = await pool.query(`SELECT id FROM users`);
 
     for (const u of users.rows) {
@@ -48,7 +49,7 @@ router.post("/abandon", async (req, res) => {
         [u.id, match_id]
       );
     }
-
+*/
     // update match
     await pool.query(
       `UPDATE matches 
