@@ -66,4 +66,23 @@ router.post("/set", async (req, res) => {
 
 });
 
+// GET current defaults
+app.get("/defaults/:userId", async (req, res) => {
+const { userId } = req.params;
+
+try {
+const result = await pool.query(
+"SELECT team FROM user_defaults WHERE user_id = $1 ORDER BY priority ASC",
+[userId]
+);
+
+// if no defaults found → return empty array (IMPORTANT)
+return res.json(result.rows.map(r => r.team));
+
+} catch (err) {
+console.error(err);
+res.status(500).json({ error: "Failed to fetch defaults" });
+}
+});
+
 module.exports = router;
