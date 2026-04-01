@@ -72,7 +72,7 @@ const { userId } = req.params;
 
 try {
 const result = await pool.query(
-"SELECT team FROM user_defaults WHERE user_id = $1 ORDER BY priority ASC",
+"SELECT team FROM user_defaults WHERE user_id = $1 ORDER BY position ASC",
 [userId]
 );
 
